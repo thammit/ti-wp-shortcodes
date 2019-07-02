@@ -84,13 +84,6 @@ class Button extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes i
         $html .= '<button class="' . $classes . '">';
 
         if(!empty($link)) {
-            /**
-             * Linktarget
-             */
-            if(!empty($target)) {
-                $target = 'target="_' . \str_replace('_', '', $target) . '"';
-            }
-
             $html .= '<a href="' . $link . '" ' . $target . '>';
         }
 
