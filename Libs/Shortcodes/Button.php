@@ -61,10 +61,10 @@ class Button extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes i
             'button'
         );
 
-        $align = (string) $args['align'];
-        $type = (string) $args['type'];
+        $type = (empty($args['type'])) ? 'primary' : (string) $args['type'];
         $link = (string) $args['link'];
-        $target = (string) $args['target'];
+        $target = (empty($args['target'])) ? 'target="_self"' : 'target="_' . \str_replace('_', '', (string) $args['target']) . '"';
+        $align = (empty($args['align'])) ? 'center' : (string) $args['align'];
 
         /**
          * If there is no content, stop right here
@@ -74,19 +74,8 @@ class Button extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes i
         }
 
         $classes = 'ti-button';
-
-        /**
-         * If no align, simply center the button.
-         */
-        if(empty($align)) {
-            $align = 'center';
-        }
-
+        $classes .= ' ti-button-' . $type;
         $classes .= ' ti-button-align-' . $align;
-
-        if(!empty($type)) {
-            $classes .= ' ' . $type;
-        }
 
 
         $html = '';
