@@ -1,59 +1,91 @@
-.ti-button {
-    /*display: inline-block;*/
-    display: block;
-    font-weight: normal;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    border: 1px solid transparent;
-    /*padding: 0.5rem 1rem;*/
-    padding: 0;
-    font-size: 1rem;
-    line-height: 1.25;
-    border-radius: 0.25rem;
-    -webkit-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+/* Shortcode: ti_button and ti_download
+----------------------------------------------------------------------------- */
+@media all {
+    .ti-button {
+        display: inline-block;
+        font-weight: normal;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: 0;
+        font-size: 1rem;
+        line-height: 1.25;
+        border-radius: 0.25rem;
+        -webkit-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+    }
 
-    color: #292b2c;
-    background-color: rgb(255,255,255);
-    border-color: #ccc;
-}
+    .ti-button-primary {
+        color: rgb(255,255,255);
+        background-color: rgb(2,117,216);
+        border-color: rgb(2,117,216);
+    }
 
-.ti-button:hover {
-    color: #292b2c;
-    background-color: #e6e6e6;
-    background-image: none;
-    border-color: #adadad;
-}
+    .ti-button-primary:hover {
+        color: rgb(255,255,255);
+        background-color: rgb(2,90,165);
+        border-color: rgb(1,84,155);
+    }
 
-.ti-button-align-left {
-    float: left;
-}
+    .ti-button-secondary {
+        color: rgb(41,43,44);
+        background-color: rgb(255,255,255);
+        border-color: rgb(204,204,204);
+    }
 
-.ti-button-align-center {
-    margin: 0 auto;
-}
+    .ti-button-secondary:hover {
+        color: rgb(41,43,44);
+        background-color: rgb(230,230,230);
+        border-color: rgb(173,173,173);
+    }
 
-.ti-button-align-right {
-    float: right;
-}
+    .ti-button-link {
+        font-weight: normal;
+        color: rgb(2,117,216);
+        border-radius: 0;
+    }
 
-/*.button-download a {
-    padding-left: 75px;
-}*/
+    .ti-button-link:hover {
+        color: rgb(1,76,140);
+        text-decoration: underline !important;
+        background-color: transparent;
+    }
 
-.ti-button-content {
-    display: block;
-    padding: 0.5rem 1rem;
-}
+    .ti-button a, .ti-button:hover a {
+        color: inherit;
+    }
 
-.button-download a .download-icon {
-    width:18px;
-    height:18px;
-    margin-right:5px;
+    .ti-button-align-left {
+        float: left;
+        margin-right: 1rem;
+    }
+
+    .ti-button-align-center {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 1.5rem;
+    }
+
+    .ti-button-align-right {
+        float: right;
+        margin-left: 1rem;
+    }
+
+    .ti-button-content {
+        display: block;
+        padding: 0.5rem 1rem;
+    }
+
+    .button-download a .download-icon {
+        width: 18px;
+        height: 18px;
+        margin-right: 5px;
+    }
 }
