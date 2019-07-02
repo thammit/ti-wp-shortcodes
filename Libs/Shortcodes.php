@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2017 ppfeufer
+ * Copyright (C) 2019 p.pfeufer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
