@@ -24,6 +24,7 @@ if(!\class_exists('\WP')) {
 require_once(\trailingslashit(\dirname(__FILE__)) . 'inc/autoloader.php');
 
 class TiWpShortcodes {
+
     /**
      * Let's do some setup here ...
      */
@@ -41,8 +42,15 @@ class TiWpShortcodes {
     }
 
     private function initShortcodes() {
-        new Libs\Shortcodes\Button;
-        new Libs\Shortcodes\Download;
+        $shortcodeLibs = new \FilesystemIterator(\PLUGINDIR . '/' . \dirname(\plugin_basename(__FILE__)) . '/Libs/Shortcodes');
+
+        foreach($shortcodeLibs as $shortcodeLib) {
+            if($shortcodeLib->getExtension() === 'php') {
+                $shortcodeClass = 'WordPress\\ThammIT\\Plugins\\TiWpShortcodes\\Libs\\Shortcodes\\' . str_replace('.php', '', $shortcodeLib->getFilename());
+
+                new $shortcodeClass;
+            }
+        }
     }
 
     /**
