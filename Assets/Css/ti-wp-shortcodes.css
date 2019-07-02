@@ -1,49 +1,59 @@
-span.ti-button {
+.ti-button {
+    /*display: inline-block;*/
     display: block;
+    font-weight: normal;
     text-align: center;
-    width:auto;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    /*padding: 0.5rem 1rem;*/
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1.25;
+    border-radius: 0.25rem;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    color: #292b2c;
+    background-color: rgb(255,255,255);
+    border-color: #ccc;
 }
 
-/*.ti-button-align-center {
-}*/
+.ti-button:hover {
+    color: #292b2c;
+    background-color: #e6e6e6;
+    background-image: none;
+    border-color: #adadad;
+}
 
 .ti-button-align-left {
     float: left;
+}
+
+.ti-button-align-center {
+    margin: 0 auto;
 }
 
 .ti-button-align-right {
     float: right;
 }
 
-.button-download a {
+/*.button-download a {
     padding-left: 75px;
+}*/
+
+.ti-button-content {
+    display: block;
+    padding: 0.5rem 1rem;
 }
 
 .button-download a .download-icon {
     width:18px;
     height:18px;
     margin-right:5px;
-}
-
-.ti-button.readmore a {
-    border-radius: 3px;
-    padding: 10px;
-    font-size: 12px;
-    text-decoration: none;
-    display: inline-block;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    margin: 3px 0;
-    line-height: 1.2em;
-    position: relative;
-    font-weight: normal;
-    text-align: center;
-    max-width: 100%;
-    padding: 9px 10px 7px;
-    font-size: 13px;
-    min-width: 80px;
-}
-
-.ti-button.readmore a:hover {
-    opacity: 0.9;
 }

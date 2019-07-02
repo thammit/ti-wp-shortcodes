@@ -85,9 +85,9 @@ class Button extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes i
         }
 
         $var_sHTML = '';
-        $var_sHTML .= '<span class="' . $classes . '">';
-        $var_sHTML .= $content;
-        $var_sHTML .= '</span>';
+        $var_sHTML .= '<button class="' . $classes . '">';
+        $var_sHTML .= '<span class="ti-button-content">' . $content . '</span>';
+        $var_sHTML .= '</button>';
 
         return $var_sHTML;
     }

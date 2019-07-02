@@ -631,7 +631,7 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
         }
 
         if($type && \in_array($type, $array_Downloadtypes, true) || isset($types['0'])) {
-            $type = 'class="ti-item-link download-type-' . $type . '"';
+            $type = 'class="ti-item-link download-type-' . \sanitize_title($type) . '"';
             $isDownload = true;
         } else {
             $type = 'class="ti-item-link"';
@@ -643,7 +643,7 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
         $var_sHTML = '';
 
         if($isDownload == true) {
-            $var_sHTML .= '<span class="ti-button button-download ti-button-align-' . $align . '">';
+            $var_sHTML .= '<button class="ti-button button-download ti-button-align-' . $align . '">';
         } else {
             $var_sHTML .= '<span class="ti-button ti-button-align-' . $align . '">';
         }
@@ -652,17 +652,21 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
             $var_sHTML .= '<a ' . $type . ' href="' . $url . '" ' . $target . '>';
         }
 
+        $var_sHTML .= '<span class="ti-button-content">';
+
         if($isDownload == true && !empty($iconClass)) {
             $var_sHTML .= '<span class="download-icon ' . $iconClass . '"></span>';
         }
 
         $var_sHTML .= '<span class="button-title">' . $title . '</span>';
 
+        $var_sHTML .= '</span>';
+
         if(!empty($url)) {
             $var_sHTML .= '</a>';
         }
 
-        $var_sHTML .= '</span>';
+        $var_sHTML .= '</button>';
 
         return $var_sHTML;
     }
