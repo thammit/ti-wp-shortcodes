@@ -72,7 +72,7 @@ class TiWpShortcodes {
 
         foreach($shortcodeLibs as $shortcodeLib) {
             if($shortcodeLib->getExtension() === 'php') {
-                $shortcodeClass = 'WordPress\\ThammIT\\Plugins\\TiWpShortcodes\\Libs\\Shortcodes\\' . str_replace('.php', '', $shortcodeLib->getFilename());
+                $shortcodeClass = 'WordPress\\ThammIT\\Plugins\\TiWpShortcodes\\Libs\\Shortcodes\\' . \str_replace('.php', '', $shortcodeLib->getFilename());
 
                 new $shortcodeClass;
             }
