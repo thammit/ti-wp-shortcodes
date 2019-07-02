@@ -20,6 +20,7 @@
 namespace WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes;
 
 class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes implements \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Interfaces\ShortcodeInterface {
+
     /**
      * Constructor
      */
@@ -41,8 +42,8 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
      * Rendering the [download] shortcode
      * [ti_download url="" type="" title="" target="" align=""]
      *  Options:
-     *      url     => The download link
-     *      type    => The file type (Optional)
+     *      type    => The button type (primary, secondary, link | Default: primary)
+     *      link    => The download link
      *      title   => The link description (Optional. Default: Download)
      *      target  => The link target (similar to <a> attribute target / default: _self)
      *      align   => left/center/right (default: center)
@@ -55,21 +56,21 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
     public function shortcodeTiDownload(array $atts, string $content = null) {
         $args = \shortcode_atts(
             [
-                'url' => '',
-                'type' => '',
+                'type' => 'primary',
+                'link' => '',
                 'title' => 'Download',
                 'target' => '_self',
-                'align' => '',
+                'align' => 'center',
             ],
             $atts,
             'download'
         );
 
-        $url = (string) $args['url'];
-        $type = (string) $args['type'];
-        $title = (string) $args['title'];
-        $target = (string) $args['target'];
-        $align = (string) $args['align'];
+        $type = (empty($args['type'])) ? 'primary' : (string) $args['type'];
+        $link = (string) $args['link'];
+        $title = (empty($args['title'])) ? 'Download' : (string) $args['title'];
+        $target = (empty($args['target'])) ? 'target="_self"' : 'target="_' . \str_replace('_', '', (string) $args['target']) . '"';
+        $align = (empty($args['align'])) ? 'center' : (string) $args['align'];
 
         $downloadTypes = [
             'pdf',
@@ -81,544 +82,528 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
             'link'
         ];
 
-        $iconClass = null;
-
-        /**
-         * If no align, simply center the button.
-         */
-        if(empty($align)) {
-            $align = 'center';
-        }
-
-        /**
-         * Linktarget
-         */
-        if(!empty($target)) {
-            $target = 'target="_' . \str_replace('_', '', $target) . '"';
-        }
-
         /**
          * Autodetecting filetype of the given download.
          * Only runs if no type is given in shortcode.
          *
          * @since 1.0
          */
-        if(empty($type)) {
-            $fileType = \strrchr($url, ".");
-
-            switch($fileType) {
-                case '.ez':
-                    $type = 'andrew-inset';
-                    break;
-
-                case '.hqx':
-                    $type = 'mac-binhex40';
-                    break;
-
-                case '.cpt':
-                    $type = 'mac-compactpro';
-                    break;
-
-                case '.doc':
-                    $type = 'ms-word document';
-                    $iconClass = 'fa fa-file-text-o';
-                    break;
-
-                case '.bin':
-                case '.dms':
-                case '.lha':
-                case '.lzh':
-                case '.exe':
-                case '.class':
-                case '.so':
-                case '.dll':
-                    $type = 'octet-stream';
-                    break;
-
-                case '.oda':
-                    $type = 'oda';
-                    break;
-
-                case '.pdf':
-                    $type = 'pdf';
-                    $iconClass = 'fa fa-file-pdf-o';
-                    break;
-
-                case '.ai':
-                case '.eps':
-                case '.ps':
-                    $type = 'postscript';
-                    break;
-
-                case '.smi':
-                case '.smil':
-                    $type = 'smil';
-                    break;
-
-                case '.xls':
-                    $type = 'ms-excel';
-                    break;
-
-                case '.ppt':
-                    $type = 'ms-powerpoint';
-                    break;
-
-                case '.wbxml':
-                    $type = 'wap-wbxml';
-                    break;
-
-                case '.wmlc':
-                    $type = 'wap-wmlc';
-                    break;
-
-                case '.wmlsc':
-                    $type = 'wap-wmlscriptc';
-                    break;
-
-                case '.bcpio':
-                    $type = 'bcpio';
-                    break;
-
-                case '.vcd':
-                    $type = 'cdlink';
-                    break;
-
-                case '.pgn':
-                    $type = 'chess-pgn';
-                    break;
-
-                case '.cpio':
-                    $type = 'cpio';
-                    break;
-
-                case '.csh':
-                    $type = 'csh';
-                    break;
-
-                case '.dcr':
-                case '.dir':
-                case '.dxr':
-                    $type = 'director';
-                    break;
-
-                case '.dvi':
-                    $type = 'dvi';
-                    break;
-
-                case '.spl':
-                    $type = 'futuresplash';
-                    break;
-
-                case '.hdf':
-                    $type = 'hdf';
-                    break;
-
-                case '.js':
-                    $type = 'text javascript';
-                    break;
-
-                case '.skp':
-                case '.skd':
-                case '.skt':
-                case '.skm':
-                    $type = 'koan';
-                    break;
-
-                case '.latex':
-                    $type = 'latex';
-                    break;
-
-                case '.nc':
-                case '.cdf':
-                    $type = 'application x-netcdf';
-                    break;
-
-                case '.sh':
-                    $type = 'sh';
-                    break;
-
-                case '.shar':
-                    $type = 'shar';
-                    break;
-
-                case '.swf':
-                    $type = 'shockwave-flash';
-                    break;
-
-                case '.sit':
-                    $type = 'stuffit';
-                    break;
-
-                case '.sv4cpio':
-                    $type = 'sv4cpio';
-                    break;
-
-                case '.sv4crc':
-                    $type = 'sv4crc';
-                    break;
-
-                case '.tcl':
-                    $type = 'tcl';
-                    break;
-
-                case '.tex':
-                    $type = 'tex';
-                    break;
-
-                case '.texinfo':
-                case '.texi':
-                    $type = 'texinfo';
-                    break;
-
-                case '.t':
-                case '.tr':
-                case '.roff':
-                    $type = 'troff';
-                    break;
-
-                case '.man':
-                    $type = 'troff-man';
-                    break;
-                case '.me':
-                    $type = 'troff-me';
-                    break;
-
-                case '.ms':
-                    $type = 'troff-ms';
-                    break;
-
-                case '.ustar':
-                    $type = 'ustar';
-                    break;
-
-                case '.src':
-                    $type = 'wais-source';
-                    break;
-
-                case '.xhtml':
-                case '.xht':
-                    $type = 'xhtml-xml';
-                    break;
-
-                case '.7z':
-                    $type = 'archive sevenzip';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.zip':
-                    $type = 'archive zip';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.arj':
-                    $type = 'archive arj';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.rar':
-                    $type = 'archive rar';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.ace':
-                    $type = 'archive ace';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.tar':
-                    $type = 'archive tar';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.gtar':
-                    $type = 'archive gtar';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.gz':
-                    $type = 'archive gzip';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.bzip':
-                case '.bzip2':
-                    $type = 'archive bzip';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.iso':
-                    $type = 'archive iso-image';
-                    $iconClass = 'fa-file-archive-o';
-                    break;
-
-                case '.au':
-                case '.snd':
-                    $type = 'audio basic';
-                    $iconClass = 'fa fa-file-audio-o';
-                    break;
-
-                case '.mid':
-                case '.midi':
-                case '.kar':
-                    $type = 'audio midi';
-                    $iconClass = 'fa fa-file-audio-o';
-                    break;
-
-                case '.mpga':
-                case '.mp2':
-                case '.mp3':
-                    $type = 'audio mpeg';
-                    $iconClass = 'fa fa-file-audio-o';
-                    break;
-
-                case '.aif':
-                case '.aiff':
-                case '.aifc':
-                    $type = 'audio aiff';
-                    $iconClass = 'fa fa-file-audio-o';
-                    break;
-
-                case '.m3u':
-                    $type = 'audio mpegurl';
-                    $iconClass = 'fa fa-file-audio-o';
-                    break;
-
-                case '.ram':
-                case '.rm':
-                case '.ra':
-                    $type = 'audio realaudio';
-                    $iconClass = 'fa fa-file-audio-o';
-                    break;
-
-                case '.rpm':
-                    $type = 'audio ealaudio-plugin';
-                    $iconClass = 'fa fa-file-audio-o';
-                    break;
-
-                case '.wav':
-                    $type = 'audio wav';
-                    $iconClass = 'fa fa-file-audio-o';
-                    break;
-
-                case '.pdb':
-                    $type = 'chemical pdb';
-                    break;
-
-                case '.xyz':
-                    $type = 'chemical xyz';
-                    break;
-
-                case '.bmp':
-                    $type = 'image bmp';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.gif':
-                    $type = 'image gif';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.ief':
-                    $type = 'image ief';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.jpeg':
-                case '.jpg':
-                case '.jpe':
-                    $type = 'image jpeg';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.png':
-                    $type = 'image png';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.tiff':
-                case '.tif':
-                    $type = 'image tiff';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.djvu':
-                case '.djv':
-                    $type = 'image vnd-djvu';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.wbmp':
-                    $type = 'image wap-wbmp';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.ras':
-                    $type = 'image cmu-raster';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.pnm':
-                    $type = 'image portable-anymap';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.pbm':
-                    $type = 'image portable-bitmap';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.pgm':
-                    $type = 'image portable-graymap';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.ppm':
-                    $type = 'image portable-pixmap';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.rgb':
-                    $type = 'image rgb';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.xbm':
-                    $type = 'image xbitmap';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.xpm':
-                    $type = 'image xpixmap';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.xwd':
-                    $type = 'image xwindowdump';
-                    $iconClass = 'fa fa-file-image-o';
-                    break;
-
-                case '.igs':
-                case '.iges':
-                    $type = 'model iges';
-                    break;
-
-                case '.msh':
-                case '.mesh':
-                case '.silo':
-                    $type = 'model mesh';
-                    break;
-
-                case '.wrl':
-                case '.vrml':
-                    $type = 'model vrml';
-                    break;
-
-                case '.css':
-                    $type = 'text css';
-                    break;
-
-                case '.html':
-                    $type = 'text html';
-                    break;
-
-                case '.htm':
-                    $type = 'text html';
-                    break;
-
-                case '.asc':
-                case '.txt':
-                    $type = 'text plain';
-                    break;
-
-                case '.rtx':
-                    $type = 'text richtext';
-                    break;
-
-                case '.rtf':
-                    $type = 'text rtf';
-                    break;
-
-                case '.sgml':
-                    $type = 'text sgml';
-                    break;
-
-                case '.sgm':
-                    $type = 'text sgml';
-                    break;
-
-                case '.tsv':
-                    $type = 'text tab-separated-values';
-                    break;
-
-                case '.wml':
-                    $type = 'text vnd-wap-wml';
-                    break;
-
-                case '.wmls':
-                    $type = 'text vnd-wap-wmlscript';
-                    break;
-
-                case '.etx':
-                    $type = 'text setext';
-                    break;
-
-                case '.xml':
-                    $type = 'text xml';
-                    break;
-
-                case '.xsl':
-                    $type = 'text xml';
-                    break;
-
-                case '.mpeg':
-                case '.mpg':
-                case '.mpe':
-                    $type = 'video mpeg';
-                    $iconClass = 'fa-file-video-o';
-                    break;
-
-                case '.qt':
-                case '.mov':
-                    $type = 'video quicktime';
-                    $iconClass = 'fa-file-video-o';
-                    break;
-
-                case '.mxu':
-                    $type = 'video vnd-mpegurl';
-                    $iconClass = 'fa-file-video-o';
-                    break;
-
-                case '.avi':
-                    $type = 'video msvideo';
-                    $iconClass = 'fa-file-video-o';
-                    break;
-
-                case '.movie':
-                    $type = 'video sgi-movie';
-                    $iconClass = 'fa-file-video-o';
-                    break;
-
-                case '.asf':
-                case '.asx':
-                    $type = 'video ms-asf';
-                    $iconClass = 'fa-file-video-o';
-                    break;
-
-                case '.wm':
-                case '.wmv':
-                    $type = 'video ms-wmv';
-                    $iconClass = 'fa-file-video-o';
-                    break;
-
-                case '.wvx':
-                    $type = 'video ms-wvx';
-                    $iconClass = 'fa-file-video-o';
-                    break;
-
-                case '.ice':
-                    $type = 'conference cooltalk';
-                    break;
-            }
+        $fileType = \strrchr($link, ".");
+        $mimeType = null;
+        $iconClass = null;
+
+        switch($fileType) {
+            case '.ez':
+                $mimeType = 'andrew-inset';
+                break;
+
+            case '.hqx':
+                $mimeType = 'mac-binhex40';
+                break;
+
+            case '.cpt':
+                $mimeType = 'mac-compactpro';
+                break;
+
+            case '.doc':
+                $mimeType = 'ms-word document';
+                $iconClass = 'fa fa-file-text-o';
+                break;
+
+            case '.bin':
+            case '.dms':
+            case '.lha':
+            case '.lzh':
+            case '.exe':
+            case '.class':
+            case '.so':
+            case '.dll':
+                $mimeType = 'octet-stream';
+                break;
+
+            case '.oda':
+                $mimeType = 'oda';
+                break;
+
+            case '.pdf':
+                $mimeType = 'pdf';
+                $iconClass = 'fa fa-file-pdf-o';
+                break;
+
+            case '.ai':
+            case '.eps':
+            case '.ps':
+                $mimeType = 'postscript';
+                break;
+
+            case '.smi':
+            case '.smil':
+                $mimeType = 'smil';
+                break;
+
+            case '.xls':
+                $mimeType = 'ms-excel';
+                break;
+
+            case '.ppt':
+                $mimeType = 'ms-powerpoint';
+                break;
+
+            case '.wbxml':
+                $mimeType = 'wap-wbxml';
+                break;
+
+            case '.wmlc':
+                $mimeType = 'wap-wmlc';
+                break;
+
+            case '.wmlsc':
+                $mimeType = 'wap-wmlscriptc';
+                break;
+
+            case '.bcpio':
+                $mimeType = 'bcpio';
+                break;
+
+            case '.vcd':
+                $mimeType = 'cdlink';
+                break;
+
+            case '.pgn':
+                $mimeType = 'chess-pgn';
+                break;
+
+            case '.cpio':
+                $mimeType = 'cpio';
+                break;
+
+            case '.csh':
+                $mimeType = 'csh';
+                break;
+
+            case '.dcr':
+            case '.dir':
+            case '.dxr':
+                $mimeType = 'director';
+                break;
+
+            case '.dvi':
+                $mimeType = 'dvi';
+                break;
+
+            case '.spl':
+                $mimeType = 'futuresplash';
+                break;
+
+            case '.hdf':
+                $mimeType = 'hdf';
+                break;
+
+            case '.js':
+                $mimeType = 'text javascript';
+                break;
+
+            case '.skp':
+            case '.skd':
+            case '.skt':
+            case '.skm':
+                $mimeType = 'koan';
+                break;
+
+            case '.latex':
+                $mimeType = 'latex';
+                break;
+
+            case '.nc':
+            case '.cdf':
+                $mimeType = 'application x-netcdf';
+                break;
+
+            case '.sh':
+                $mimeType = 'sh';
+                break;
+
+            case '.shar':
+                $mimeType = 'shar';
+                break;
+
+            case '.swf':
+                $mimeType = 'shockwave-flash';
+                break;
+
+            case '.sit':
+                $mimeType = 'stuffit';
+                break;
+
+            case '.sv4cpio':
+                $mimeType = 'sv4cpio';
+                break;
+
+            case '.sv4crc':
+                $mimeType = 'sv4crc';
+                break;
+
+            case '.tcl':
+                $mimeType = 'tcl';
+                break;
+
+            case '.tex':
+                $mimeType = 'tex';
+                break;
+
+            case '.texinfo':
+            case '.texi':
+                $mimeType = 'texinfo';
+                break;
+
+            case '.t':
+            case '.tr':
+            case '.roff':
+                $mimeType = 'troff';
+                break;
+
+            case '.man':
+                $mimeType = 'troff-man';
+                break;
+            case '.me':
+                $mimeType = 'troff-me';
+                break;
+
+            case '.ms':
+                $mimeType = 'troff-ms';
+                break;
+
+            case '.ustar':
+                $mimeType = 'ustar';
+                break;
+
+            case '.src':
+                $mimeType = 'wais-source';
+                break;
+
+            case '.xhtml':
+            case '.xht':
+                $mimeType = 'xhtml-xml';
+                break;
+
+            case '.7z':
+                $mimeType = 'archive sevenzip';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.zip':
+                $mimeType = 'archive zip';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.arj':
+                $mimeType = 'archive arj';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.rar':
+                $mimeType = 'archive rar';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.ace':
+                $mimeType = 'archive ace';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.tar':
+                $mimeType = 'archive tar';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.gtar':
+                $mimeType = 'archive gtar';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.gz':
+                $mimeType = 'archive gzip';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.bzip':
+            case '.bzip2':
+                $mimeType = 'archive bzip';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.iso':
+                $mimeType = 'archive iso-image';
+                $iconClass = 'fa-file-archive-o';
+                break;
+
+            case '.au':
+            case '.snd':
+                $mimeType = 'audio basic';
+                $iconClass = 'fa fa-file-audio-o';
+                break;
+
+            case '.mid':
+            case '.midi':
+            case '.kar':
+                $mimeType = 'audio midi';
+                $iconClass = 'fa fa-file-audio-o';
+                break;
+
+            case '.mpga':
+            case '.mp2':
+            case '.mp3':
+                $mimeType = 'audio mpeg';
+                $iconClass = 'fa fa-file-audio-o';
+                break;
+
+            case '.aif':
+            case '.aiff':
+            case '.aifc':
+                $mimeType = 'audio aiff';
+                $iconClass = 'fa fa-file-audio-o';
+                break;
+
+            case '.m3u':
+                $mimeType = 'audio mpegurl';
+                $iconClass = 'fa fa-file-audio-o';
+                break;
+
+            case '.ram':
+            case '.rm':
+            case '.ra':
+                $mimeType = 'audio realaudio';
+                $iconClass = 'fa fa-file-audio-o';
+                break;
+
+            case '.rpm':
+                $mimeType = 'audio ealaudio-plugin';
+                $iconClass = 'fa fa-file-audio-o';
+                break;
+
+            case '.wav':
+                $mimeType = 'audio wav';
+                $iconClass = 'fa fa-file-audio-o';
+                break;
+
+            case '.pdb':
+                $mimeType = 'chemical pdb';
+                break;
+
+            case '.xyz':
+                $mimeType = 'chemical xyz';
+                break;
+
+            case '.bmp':
+                $mimeType = 'image bmp';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.gif':
+                $mimeType = 'image gif';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.ief':
+                $mimeType = 'image ief';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.jpeg':
+            case '.jpg':
+            case '.jpe':
+                $mimeType = 'image jpeg';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.png':
+                $mimeType = 'image png';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.tiff':
+            case '.tif':
+                $mimeType = 'image tiff';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.djvu':
+            case '.djv':
+                $mimeType = 'image vnd-djvu';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.wbmp':
+                $mimeType = 'image wap-wbmp';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.ras':
+                $mimeType = 'image cmu-raster';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.pnm':
+                $mimeType = 'image portable-anymap';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.pbm':
+                $mimeType = 'image portable-bitmap';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.pgm':
+                $mimeType = 'image portable-graymap';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.ppm':
+                $mimeType = 'image portable-pixmap';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.rgb':
+                $mimeType = 'image rgb';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.xbm':
+                $mimeType = 'image xbitmap';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.xpm':
+                $mimeType = 'image xpixmap';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.xwd':
+                $mimeType = 'image xwindowdump';
+                $iconClass = 'fa fa-file-image-o';
+                break;
+
+            case '.igs':
+            case '.iges':
+                $mimeType = 'model iges';
+                break;
+
+            case '.msh':
+            case '.mesh':
+            case '.silo':
+                $mimeType = 'model mesh';
+                break;
+
+            case '.wrl':
+            case '.vrml':
+                $mimeType = 'model vrml';
+                break;
+
+            case '.css':
+                $mimeType = 'text css';
+                break;
+
+            case '.html':
+                $mimeType = 'text html';
+                break;
+
+            case '.htm':
+                $mimeType = 'text html';
+                break;
+
+            case '.asc':
+            case '.txt':
+                $mimeType = 'text plain';
+                break;
+
+            case '.rtx':
+                $mimeType = 'text richtext';
+                break;
+
+            case '.rtf':
+                $mimeType = 'text rtf';
+                break;
+
+            case '.sgml':
+                $mimeType = 'text sgml';
+                break;
+
+            case '.sgm':
+                $mimeType = 'text sgml';
+                break;
+
+            case '.tsv':
+                $mimeType = 'text tab-separated-values';
+                break;
+
+            case '.wml':
+                $mimeType = 'text vnd-wap-wml';
+                break;
+
+            case '.wmls':
+                $mimeType = 'text vnd-wap-wmlscript';
+                break;
+
+            case '.etx':
+                $mimeType = 'text setext';
+                break;
+
+            case '.xml':
+                $mimeType = 'text xml';
+                break;
+
+            case '.xsl':
+                $mimeType = 'text xml';
+                break;
+
+            case '.mpeg':
+            case '.mpg':
+            case '.mpe':
+                $mimeType = 'video mpeg';
+                $iconClass = 'fa-file-video-o';
+                break;
+
+            case '.qt':
+            case '.mov':
+                $mimeType = 'video quicktime';
+                $iconClass = 'fa-file-video-o';
+                break;
+
+            case '.mxu':
+                $mimeType = 'video vnd-mpegurl';
+                $iconClass = 'fa-file-video-o';
+                break;
+
+            case '.avi':
+                $mimeType = 'video msvideo';
+                $iconClass = 'fa-file-video-o';
+                break;
+
+            case '.movie':
+                $mimeType = 'video sgi-movie';
+                $iconClass = 'fa-file-video-o';
+                break;
+
+            case '.asf':
+            case '.asx':
+                $mimeType = 'video ms-asf';
+                $iconClass = 'fa-file-video-o';
+                break;
+
+            case '.wm':
+            case '.wmv':
+                $mimeType = 'video ms-wmv';
+                $iconClass = 'fa-file-video-o';
+                break;
+
+            case '.wvx':
+                $mimeType = 'video ms-wvx';
+                $iconClass = 'fa-file-video-o';
+                break;
+
+            case '.ice':
+                $mimeType = 'conference cooltalk';
+                break;
         }
 
         /**
@@ -626,15 +611,16 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
          */
         $isDownload = false;
 
-        if(\strstr($type, ' ')) {
-            $types = \explode(' ', $type);
+        if(\strstr($mimeType, ' ')) {
+            $types = \explode(' ', $mimeType);
         }
 
-        if($type && \in_array($type, $downloadTypes, true) || isset($types['0'])) {
-            $type = 'class="ti-item-link download-type-' . \sanitize_title($type) . '"';
+        $linkClass = '';
+        if(!\is_null($mimeType) && \in_array($mimeType, $downloadTypes, true) || isset($types['0'])) {
+            $linkClass = 'class="ti-item-link download-type-' . \sanitize_title($mimeType) . '"';
             $isDownload = true;
         } else {
-            $type = 'class="ti-item-link"';
+            $linkClass = 'class="ti-item-link"';
         }
 
         /**
@@ -643,13 +629,13 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
         $html = '';
 
         if($isDownload == true) {
-            $html .= '<button class="ti-button button-download ti-button-align-' . $align . '">';
+            $html .= '<button class="ti-button ti-button-' . $type . ' button-download ti-button-align-' . $align . '">';
         } else {
             $html .= '<button class="ti-button ti-button-align-' . $align . '">';
         }
 
-        if(!empty($url)) {
-            $html .= '<a ' . $type . ' href="' . $url . '" ' . $target . '>';
+        if(!empty($link)) {
+            $html .= '<a ' . $linkClass . ' href="' . $link . '" ' . $target . '>';
         }
 
         $html .= '<span class="ti-button-content">';
@@ -662,7 +648,7 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
 
         $html .= '</span>';
 
-        if(!empty($url)) {
+        if(!empty($link)) {
             $html .= '</a>';
         }
 
