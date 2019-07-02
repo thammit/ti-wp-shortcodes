@@ -1,0 +1,92 @@
+/* Shortcode: ti_button and ti_download
+----------------------------------------------------------------------------- */
+@media all {
+    .ti-button {
+        display: inline-block;
+        font-weight: normal;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: 0;
+        font-size: 1rem;
+        line-height: 1.25;
+        border-radius: 0.25rem;
+        -webkit-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        background: transparent;
+    }
+
+    .ti-button-primary {
+        color: rgb(255,255,255);
+        background-color: rgb(2,117,216);
+        border-color: rgb(2,117,216);
+    }
+
+    .ti-button-primary:hover {
+        color: rgb(255,255,255);
+        background-color: rgb(2,90,165);
+        border-color: rgb(1,84,155);
+    }
+
+    .ti-button-secondary {
+        color: rgb(41,43,44);
+        background-color: rgb(255,255,255);
+        border-color: rgb(204,204,204);
+    }
+
+    .ti-button-secondary:hover {
+        color: rgb(41,43,44);
+        background-color: rgb(230,230,230);
+        border-color: rgb(173,173,173);
+    }
+
+    .ti-button-link {
+        font-weight: normal;
+        color: rgb(2,117,216);
+        border-radius: 0;
+    }
+
+    .ti-button-link:hover {
+        color: rgb(1,76,140);
+        text-decoration: underline !important;
+        background-color: transparent;
+    }
+
+    .ti-button a,
+    .ti-button a:visited,
+    .ti-button:hover a {
+        color: inherit;
+    }
+
+    .ti-button-align-left {
+        float: left;
+        margin-right: 1rem;
+    }
+
+    .ti-button-align-center {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 1.5rem;
+    }
+
+    .ti-button-align-right {
+        float: right;
+        margin-left: 1rem;
+    }
+
+    .ti-button-content {
+        display: block;
+        padding: 0.5rem 1rem;
+    }
+
+    .button-download a .download-icon {
+        margin-right: 5px;
+    }
+}
