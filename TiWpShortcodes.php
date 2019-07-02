@@ -4,7 +4,7 @@
  * Plugin name: Thamm IT WordPress Shortcodes
  * Plugin URI: https://github.com/thammit/ti-wp-shortcodes
  * Author: Peter Pfeufer (Thamm IT)
- * Author URI: http://www.thamm-it.de
+ * Author URI: https://www.thamm-it.de
  * Version: 1.0.0
  * Description: A collection of assorted shortcodes for WordPress
  */
