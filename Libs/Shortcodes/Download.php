@@ -40,7 +40,7 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
 
     /**
      * Rendering the [download] shortcode
-     * [ti_download url="" type="" title="" target="" align=""]
+     * [ti_download link="" type="" title="" target="" align=""]
      *  Options:
      *      type    => The button type (primary, secondary, link | Default: primary)
      *      link    => The download link
