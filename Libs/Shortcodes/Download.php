@@ -71,7 +71,7 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
         $target = (string) $args['target'];
         $align = (string) $args['align'];
 
-        $array_Downloadtypes = [
+        $downloadTypes = [
             'pdf',
             'archive',
             'doc',
@@ -104,9 +104,9 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
          * @since 1.0
          */
         if(empty($type)) {
-            $var_sFiletype = \strrchr($url, ".");
+            $fileType = \strrchr($url, ".");
 
-            switch($var_sFiletype) {
+            switch($fileType) {
                 case '.ez':
                     $type = 'andrew-inset';
                     break;
@@ -630,7 +630,7 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
             $types = \explode(' ', $type);
         }
 
-        if($type && \in_array($type, $array_Downloadtypes, true) || isset($types['0'])) {
+        if($type && \in_array($type, $downloadTypes, true) || isset($types['0'])) {
             $type = 'class="ti-item-link download-type-' . \sanitize_title($type) . '"';
             $isDownload = true;
         } else {
@@ -640,34 +640,34 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
         /**
          * The HTML
          */
-        $var_sHTML = '';
+        $html = '';
 
         if($isDownload == true) {
-            $var_sHTML .= '<button class="ti-button button-download ti-button-align-' . $align . '">';
+            $html .= '<button class="ti-button button-download ti-button-align-' . $align . '">';
         } else {
-            $var_sHTML .= '<span class="ti-button ti-button-align-' . $align . '">';
+            $html .= '<button class="ti-button ti-button-align-' . $align . '">';
         }
 
         if(!empty($url)) {
-            $var_sHTML .= '<a ' . $type . ' href="' . $url . '" ' . $target . '>';
+            $html .= '<a ' . $type . ' href="' . $url . '" ' . $target . '>';
         }
 
-        $var_sHTML .= '<span class="ti-button-content">';
+        $html .= '<span class="ti-button-content">';
 
         if($isDownload == true && !empty($iconClass)) {
-            $var_sHTML .= '<span class="download-icon ' . $iconClass . '"></span>';
+            $html .= '<span class="download-icon ' . $iconClass . '"></span>';
         }
 
-        $var_sHTML .= '<span class="button-title">' . $title . '</span>';
+        $html .= '<span class="button-title">' . $title . '</span>';
 
-        $var_sHTML .= '</span>';
+        $html .= '</span>';
 
         if(!empty($url)) {
-            $var_sHTML .= '</a>';
+            $html .= '</a>';
         }
 
-        $var_sHTML .= '</button>';
+        $html .= '</button>';
 
-        return $var_sHTML;
+        return $html;
     }
 }

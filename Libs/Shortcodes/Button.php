@@ -53,7 +53,9 @@ class Button extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes i
         $args = \shortcode_atts(
             [
                 'align' => '',
-                'type' => ''
+                'type' => '',
+                'link' => '',
+                'target' => ''
             ],
             $atts,
             'button'
@@ -61,6 +63,8 @@ class Button extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes i
 
         $align = (string) $args['align'];
         $type = (string) $args['type'];
+        $link = (string) $args['link'];
+        $target = (string) $args['target'];
 
         /**
          * If there is no content, stop right here
@@ -84,11 +88,29 @@ class Button extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes i
             $classes .= ' ' . $type;
         }
 
-        $var_sHTML = '';
-        $var_sHTML .= '<button class="' . $classes . '">';
-        $var_sHTML .= '<span class="ti-button-content">' . $content . '</span>';
-        $var_sHTML .= '</button>';
 
-        return $var_sHTML;
+        $html = '';
+        $html .= '<button class="' . $classes . '">';
+
+        if(!empty($link)) {
+            /**
+             * Linktarget
+             */
+            if(!empty($target)) {
+                $target = 'target="_' . \str_replace('_', '', $target) . '"';
+            }
+
+            $html .= '<a href="' . $link . '" ' . $target . '>';
+        }
+
+        $html .= '<span class="ti-button-content">' . $content . '</span>';
+
+        if(!empty($link)) {
+            $html .= '</a>';
+        }
+
+        $html .= '</button>';
+
+        return $html;
     }
 }

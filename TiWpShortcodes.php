@@ -74,6 +74,7 @@ class TiWpShortcodes {
      */
     public function enqueueCss() {
         $pluginStyle = (\WP_DEBUG === true) ? '/' . \PLUGINDIR . '/' . \dirname(\plugin_basename(__FILE__)) . '/Assets/Css/ti-wp-shortcodes.css' : '/' . \PLUGINDIR . '/' . \dirname(\plugin_basename(__FILE__)) . '/css/ti-wp-shortcodes.min.css';
+
         \wp_enqueue_style('font-awesome', '/' . \PLUGINDIR . '/' . \dirname(\plugin_basename(__FILE__)) . '/Assets/Libraries/font-awesome/4.6.3/css/font-awesome.min.css');
         \wp_enqueue_style('ti-button-shortcode', $pluginStyle, false);
     }
