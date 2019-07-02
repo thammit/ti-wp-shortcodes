@@ -47,13 +47,21 @@ class TiWpShortcodes {
     public function init() {
         new Libs\Shortcodes(true);
 
-        $this->initShortcodes();
 
         if(!\is_admin()) {
             /**
              * Adding some CSS
              */
             \add_action('wp_enqueue_scripts', [$this, 'enqueueCss']);
+
+            /**
+             * Initializing the shortcodes
+             */
+            $this->initShortcodes();
+        }
+
+        if(\is_admin()) {
+            $this->initGitHubUpdater();
         }
     }
 
@@ -77,6 +85,27 @@ class TiWpShortcodes {
 
         \wp_enqueue_style('font-awesome', '/' . \PLUGINDIR . '/' . \dirname(\plugin_basename(__FILE__)) . '/Assets/Libraries/font-awesome/4.6.3/css/font-awesome.min.css');
         \wp_enqueue_style('ti-button-shortcode', $pluginStyle, false);
+    }
+
+    private function initGitHubUpdater() {
+        /**
+         * Check Github for updates
+         */
+        $githubConfig = array(
+            'slug' => \plugin_basename(__FILE__),
+            'proper_folder_name' => \dirname(\plugin_basename(__FILE__)),
+            'api_url' => 'https://api.github.com/repos/thammit/ti-wp-shortcodes',
+            'raw_url' => 'https://raw.github.com/thammit/ti-wp-shortcodes/master',
+            'github_url' => 'https://github.com/thammit/ti-wp-shortcodes',
+            'zip_url' => 'https://github.com/thammit/ti-wp-shortcodes/archive/master.zip',
+            'sslverify' => true,
+            'requires' => '5.0',
+            'tested' => '5.2',
+            'readme' => 'README.md',
+            'access_token' => '',
+        );
+
+        new Libs\GithubUpdater($githubConfig);
     }
 }
 
