@@ -42,7 +42,9 @@ class Button extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes i
      * [ti_button align="" type=""]Link/Text here[/ti_button]
      *  Options:
      *      align   => left/center/right (default: center)
-     *      type    => Buttontype (readmore for a Read More Button for example)
+     *      type    => The button type (primary, secondary, link | Default: primary)
+     *      link    => The link
+     *      target  => The link target (similar to <a> attribute target / default: _self)
      *
      * This is basically just a designed text box.
      *
