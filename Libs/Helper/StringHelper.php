@@ -27,11 +27,11 @@ class StringHelper extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Single
      * Make a string camelCase
      *
      * @param string $string
-     * @param boolean $ucFirst
+     * @param bool $ucFirst
      * @param array $noStrip
      * @return string
      */
-    public function camelCase($string, $ucFirst = false, $noStrip = array()) {
+    public function camelCase(string $string, bool $ucFirst = false, array $noStrip = array()) {
         // First we make sure all is lower case
         $string = \strtolower($string);
 

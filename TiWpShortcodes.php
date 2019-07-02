@@ -24,7 +24,6 @@ if(!\class_exists('\WP')) {
 require_once(\trailingslashit(\dirname(__FILE__)) . 'inc/autoloader.php');
 
 class TiWpShortcodes {
-
     /**
      * Let's do some setup here ...
      */
