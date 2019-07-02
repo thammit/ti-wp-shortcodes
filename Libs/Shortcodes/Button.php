@@ -49,7 +49,7 @@ class Button extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes i
      * @param array $atts
      * @param string $content
      */
-    public function shortcodeTiButton($atts, $content = null) {
+    public function shortcodeTiButton(array $atts, string $content = null) {
         $args = \shortcode_atts(
             [
                 'align' => '',

@@ -52,7 +52,7 @@ class Download extends \WordPress\ThammIT\Plugins\TiWpShortcodes\Libs\Shortcodes
      * @param array $atts
      * @param string $content
      */
-    public function shortcodeTiDownload($atts, $content = null) {
+    public function shortcodeTiDownload(array $atts, string $content = null) {
         $args = \shortcode_atts(
             [
                 'url' => '',
