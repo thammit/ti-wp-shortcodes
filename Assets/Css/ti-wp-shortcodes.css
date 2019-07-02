@@ -19,6 +19,7 @@
         -webkit-transition: all 0.2s ease-in-out;
         -o-transition: all 0.2s ease-in-out;
         transition: all 0.2s ease-in-out;
+        background: transparent;
     }
 
     .ti-button-primary {
@@ -57,7 +58,9 @@
         background-color: transparent;
     }
 
-    .ti-button a, .ti-button:hover a {
+    .ti-button a,
+    .ti-button a:visited,
+    .ti-button:hover a {
         color: inherit;
     }
 
@@ -84,8 +87,6 @@
     }
 
     .button-download a .download-icon {
-        width: 18px;
-        height: 18px;
         margin-right: 5px;
     }
 }
